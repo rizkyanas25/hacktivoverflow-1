@@ -10,7 +10,7 @@ const route = require('./routes')
 const mongoose = require('mongoose')
 const errorHandler = require('./middlewares/errorHandler')
 
-mongoose.connect(`mongodb://localhost/foxesflow`,{useNewUrlParser : true}, function (err) {
+mongoose.connect(process.env.MONGODB_URL,{useNewUrlParser : true}, function (err) {
   if (err) console.log('connection to db failed')
   else {
     console.log(`connection to db foxesflow success`)
