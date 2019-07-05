@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round @click="leftDrawerOpen = !leftDrawerOpen" aria-label="Menu" icon="menu" />
 
-        <q-toolbar-title @click="$router.push('/')">
+        <q-toolbar-title @click="toHome">
           <q-img
             src="https://cdn1.iconfinder.com/data/icons/animal-face/512/fox-512.png"
             style="height: 40px; max-width: 40px; margin-top:-15px"
@@ -64,7 +64,7 @@
           </q-item>
 
           <q-list  v-if="editTags === false" style="overflow-y:scroll; height:100px; width:85%">
-            <q-chip v-for="(tag, i) in user.watchedTags" :key="i" dense clickable icon="loyalty">{{tag.value}}</q-chip>
+            <q-chip v-for="(tag, i) in user.watchedTags" :key="i" dense clickable @click="filter(tag)" icon="loyalty">{{tag.value}}</q-chip>
           </q-list>
           <tags-input
             v-if="editTags"
@@ -159,7 +159,8 @@ export default {
       right: true,
       dialog: false,
       maximizedToggle: true,
-      editTags: false
+      editTags: false,
+      socket : io('http://localhost:3000')
     }
   },
   methods: {
@@ -214,6 +215,14 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    filter (tag) {
+      console.log(tag.value)
+      this.$store.dispatch('getFiltered', tag.value)
+    },
+    toHome () {
+      this.$store.dispatch('getQuestions')
+      this.$router.push('/')
     }
   },
   computed: {
@@ -229,6 +238,11 @@ export default {
     console.log(this.$route.params)
     this.$store.dispatch('getQuestion', this.$route.params.questionId)
     this.$store.dispatch('getAnswers', this.$route.params.questionId)
+    this.socket.on('getJobs', data => {
+          console.log('cron is triggered?')
+          // this.jobs = data
+          this.$store.commit('setJobs', data)
+    })
   }
 }
 </script>

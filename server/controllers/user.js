@@ -26,7 +26,7 @@ class UserController {
             })
             .catch(next)
     }
-
+ 
     static updateTag (req, res, next) {
         User
         .findByIdAndUpdate(req.loggedUser._id, {

@@ -35,6 +35,19 @@ class QuestionController {
       .catch(next)
   }
 
+  static filterByTag (req, res, next) {
+    console.log(req.query.tags)
+    Question
+      .find({
+        tags: { $in: req.query.tags }
+      })
+      .populate('userId')
+      .then(filtered => {
+        res.status(200).json(filtered)
+      })
+      .catch(next)
+  }
+
   static findQuestion (req, res, next) {
     Question
       .findById(req.params.questionId)

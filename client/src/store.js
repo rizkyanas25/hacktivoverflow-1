@@ -37,6 +37,7 @@ export default new Vuex.Store({
     },
     setQuestions (state, questions) {
       state.questions = questions
+      console.log(state.question)
     },
     setQuestion (state, question) {
       state.question = question
@@ -124,6 +125,16 @@ export default new Vuex.Store({
         })
         .catch(err => {
           commit('errorPopup', err.response.data)
+        })
+    },
+    getFiltered ({ commit, dispatch }, tag) {
+      axios.get(`/questions/filter?tags=${tag}`)
+        .then(({ data }) => {
+          console.log(data)
+          commit('setQuestions', data)
+        })
+        .catch(err => {
+          console.log(err)
         })
     },
     getQuestion ({ commit, dispatch }, id) {

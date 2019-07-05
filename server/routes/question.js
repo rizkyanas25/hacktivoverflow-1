@@ -6,6 +6,7 @@ const { authenticate, authorizeQuestion, authorizeAnswer } = require('../middlew
 
 router.get('/', QuestionController.findAllQuestions)
 router.get('/tags', QuestionController.findTags)
+router.get('/filter', QuestionController.filterByTag)
 router.get('/:questionId', QuestionController.findQuestion)
 router.get('/:questionId/answers', AnswerController.findAllAnswers)
 
